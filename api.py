@@ -1,41 +1,31 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File
 from main import run_maintenance_assistant
-import shutil
-import os
+import uvicorn
 
 app = FastAPI(title="Siemens AI Maintenance API")
 
+# --- API ENDPOINTS ---
+
 @app.get("/")
 def home():
-    return {"message": "Siemens AI Maintenance API is running! 🦾"}
+    return {"status": "Online", "model": "Gemini 2.0 Flash", "domain": "Siemens S7-1200"}
 
-from typing import Optional
+@app.post("/ask")
+async def ask_question(query: str):
+    """Endpoint for text-based PLC troubleshooting."""
+    result = run_maintenance_assistant(query, is_image=False)
+    return {"query": query, "solution": result}
 
-@app.post("/ask-ai")
-async def ask_ai(
-    question: Optional[str] = Form(None), 
-    file: Optional[UploadFile] = File(None)
-):
-    # حالة 1: لو بعت صورة (زي اللي بيحصل في n8n لما ترفع ملف)
-    if file:
-        temp_file = f"api_temp_{file.filename}"
-        with open(temp_file, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+@app.post("/analyze-image")
+async def analyze_image(file: UploadFile = File(...)):
+    """Endpoint for vision-based diagnostic buffer analysis."""
+    # Logic to save and process image
+    file_path = f"api_temp_{file.filename}"
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
         
-        try:
-            print(f"📸 API received image: {file.filename}")
-            result = run_maintenance_assistant(temp_file, is_image=True)
-            return {"source": "image_analysis", "solution": result}
-        finally:
-            if os.path.exists(temp_file):
-                os.remove(temp_file)
+    result = run_maintenance_assistant(file_path, is_image=True)
+    return {"filename": file.filename, "analysis": result}
 
-    # حالة 2: لو بعت نص بس
-    if question:
-        print(f"💬 API received question: {question}")
-        result = run_maintenance_assistant(question, is_image=False)
-        return {"source": "text_query", "solution": result}
-
-    raise HTTPException(status_code=400, detail="Please provide either a question or an image.")
-
-# لتشغيل الـ API: uvicorn api:app --reload
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
