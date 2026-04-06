@@ -1,6 +1,6 @@
 # 🦾 Siemens S7-1200 AI Maintenance Assistant
 
-An advanced **Agentic RAG (Retrieval-Augmented Generation)** system designed to assist engineers in diagnosing and troubleshooting Siemens S7-1200 PLC faults using **Gemini 2.0 Flash** and **LangGraph**.
+An advanced **Agentic RAG (Retrieval-Augmented Generation)** system designed to assist engineers in diagnosing and troubleshooting Siemens S7-1200 PLC faults using **Gemini 2.5 Flash** and **LangGraph**.
 
 ---
 
