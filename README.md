@@ -66,4 +66,4 @@ Create a .env file and add your Google API Key:
 
 **Kareem Montaser**
 *Mechatronics Engineer | Backend & AI Automation Specialist*
-[LinkedIn](https://www.linkedin.com/in/kareem-montaser/) | [GitHub](https://github.com/karimmontaser0)
+[LinkedIn](https://www.linkedin.com/in/karim-montaser-bb608a313) | [GitHub](https://github.com/karimmontaser0)
