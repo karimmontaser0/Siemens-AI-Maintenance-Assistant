@@ -1,7 +1,7 @@
 .env
 __pycache__/
 *.pyc
+ai_env/
 venv/
 .streamlit/
-# لو مش عايز ترفع قاعدة البيانات عشان حجمها كبير (اختياري)
-# siemens_db/
+siemens_db/
